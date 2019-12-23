@@ -1,6 +1,35 @@
 # Nginx-builder
 [![Build Status](https://travis-ci.org/TinkoffCreditSystems/Nginx-builder.svg?branch=master)](https://travis-ci.org/TinkoffCreditSystems/Nginx-builder)
 
+
+
+
+
+## Сборка
+
+Немного изменил оригинальные Dockerfile. 
+Проверена сборка и работа на el6,el7,el8
+
+```
+docker build -f Dockerfile.centos -t nginx-builder:6 .
+docker build -f Dockerfile.centos6 -t nginx-builder:7 .
+docker build -f Dockerfile.centos8 -t nginx-builder:8 .
+
+
+docker run --rm -it -v $(pwd):/nginx-builder:rw nginx-builder:7 /nginx-builder/main.py build
+docker run --rm -it -v $(pwd):/nginx-builder:rw nginx-builder:6 /nginx-builder/main.py build
+docker run --rm -it -v $(pwd):/nginx-builder:rw nginx-builder:8 /nginx-builder/main.py build
+
+```
+
+lua модуль позволяет запустить https://github.com/knyar/nginx-lua-prometheus - экспортёр, которые работает на базе самого nginx.
+Пример конфигурации в nginx_lua_exporter.
+Необзодимо заинклюдить: 
+- nginx_lua_exporter/lua-prometheus.conf
+- nginx_lua_exporter/prometheus.inc
+
+
+
 ## Description/Описание
 ### ENG
 Tool for building `deb` or `rpm` package [Nginx] (http://nginx.org/) of the required version from the source code, with the ability to connect third-party modules.
